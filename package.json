@@ -1,0 +1,33 @@
+{
+  "name": "agrosightsrestapi",
+  "version": "1.0.0",
+  "description": "This is the api for Agrosights project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "api",
+    "json",
+    "agrosights",
+    "agriculture",
+    "scientist",
+    "get",
+    "post",
+    "rest"
+  ],
+  "author": "Shresth Dubey",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.10.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
