@@ -2,13 +2,6 @@ const { param } = require("express-validator");
 const db = require("../util/database");
 const path = require('path');
 
-const multer = require('multer');
-
-// const storage = multer.diskStorage({
-//     destination: 
-// });
-
-
 module.exports = class Question {
     
     constructor(u_id,  question, tagList) {
