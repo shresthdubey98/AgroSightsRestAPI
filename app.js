@@ -2,18 +2,18 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-
-// const { static } = require('express');  // Uncomment for static serving
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const userRouter = require("./routes/user");
 const qaRouter = require("./routes/qa");
-
+const mime = require('mime-types');
 const app = express();
 
 app.use(bodyParser.json()); // for application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Uncomment for static serving 
-// app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/media/images', express.static(path.join(__dirname, 'media', 'images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -44,7 +44,40 @@ app.use((req, res, next) => {
   };
   next();
 });
-app.use('/qa',qaRouter);
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+      cb(null, path.join('media', 'images'));
+    }
+  },
+  filename: (req, file, cb) => {
+    cb(null, uuidv4() +'.'+ mime.extension(file.mimetype));
+  }
+});
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' || 
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ){
+    cb(null, true);
+  }else{
+    const err = new Error("Unsupported file format");
+    err.statusCode = 415;
+    cb(err, false);
+  }
+}
+app.use(
+  multer({storage: fileStorage, fileFilter:fileFilter,}).array('image', 5)
+  );
+// app.use('/demo',(req, res, next)=>{
+//   console.log(req.files);
+//   console.log(req.body);
+//   res.status(200).json({
+//     message: "mil gayi"
+//   });
+// });
+app.use('/qa', qaRouter);
 app.use((error, req, res, next) => {
   // console.log(error);
   const status = error.statusCode || 500;

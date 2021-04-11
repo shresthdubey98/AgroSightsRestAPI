@@ -4,26 +4,24 @@ const path = require('path');
 
 module.exports = class Question {
     
-    constructor(u_id,  question, tagList) {
-        this.name = u_id;
+    constructor(u_id,  title, question) {
+        this.u_id = u_id;
+        this.title = title;
         this.question = question;
-        this.tagList = tagList;
-        
     }
 
     save() {
         return db.execute(
-            'INSERT INTO `tags` (`tag_name`) VALUES (?);',
-            [this.name]
+            'INSERT INTO `questions` (`u_id`, `title`, `question`) VALUES (?, ?, ?);',
+            [this.u_id, this.title, this.question]
         );
     }
-    static getTagById(tagId) {
-        return db.execute("SELECT tag_name FROM tags WHERE id = ?",
-                [tagId]
-            );
-    }
-    static getAllTags(){
-        return db.execute("SELECT * FROM tags;");
-    }
-    
+    // static getTagById(tagId) {
+    //     return db.execute("SELECT tag_name FROM tags WHERE id = ?",
+    //             [tagId]
+    //         );
+    // }
+    // static getAllTags(){
+    //     return db.execute("SELECT * FROM tags;");
+    // }
 };
