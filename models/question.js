@@ -16,12 +16,8 @@ module.exports = class Question {
             [this.u_id, this.title, this.question]
         );
     }
-    // static getTagById(tagId) {
-    //     return db.execute("SELECT tag_name FROM tags WHERE id = ?",
-    //             [tagId]
-    //         );
-    // }
-    // static getAllTags(){
-    //     return db.execute("SELECT * FROM tags;");
-    // }
+    static getPagedQuestions(pageNo) {
+        return db.execute(`SELECT q.id, q.u_id, q.title, q.question, u.f_name, u.l_name, q.upvotes, q.downvotes from questions q, users u where q.u_id = u.id limit ${(pageNo-1)*10}, 10`);
+    }
+    
 };

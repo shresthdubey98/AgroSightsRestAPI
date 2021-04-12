@@ -59,3 +59,15 @@ exports.addQuestion = (req, res, next) => {
             res.status(500).json({message: err.message});
         });
 }
+exports.getPagedQuestions = (req, res, next)=>{
+    const pageNo = req.params.pageNo || 0;
+    Question.getPagedQuestions(pageNo)
+    .then(([rows, fieldData])=>{
+        if (rows.length == 0){
+            const err = new Error("No more result pages");
+            err.statusCode = 404;
+            throw err;
+        }
+        res.status(200).json({data: rows});
+    })
+}

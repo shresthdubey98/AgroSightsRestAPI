@@ -9,7 +9,7 @@ router.post('/add-question', [
     body('title').trim().isLength({min: 10, max: 200}),
     body('question').trim().isLength({min:20, max:1000}),
 ], qaControler.addQuestion);
-
+router.get('/get-paged-questions/:pageNo', qaControler.getPagedQuestions);
 // POST /user/login 
 // router.post('/login', [
 //     oneOf([body('emailPhone').trim().isEmail(), body('emailPhone').trim().isNumeric().isLength({min: 10, max:10})]),
