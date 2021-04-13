@@ -72,7 +72,7 @@ exports.loginUser = (req, res, next) => {
                     email: userData.email
                 },
                 jwtSecret,
-                { expiresIn: '1h' }
+                { expiresIn: '1d' }
             );
             res.status(200).json({
                 message: "Login Successful",
