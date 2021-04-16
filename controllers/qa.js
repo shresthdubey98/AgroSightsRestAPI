@@ -26,9 +26,9 @@ exports.addQuestion = (req, res, next) => {
     const u_id = req.auth.userId;
     const title = req.body.title;
     const question = req.body.question;
-    const tagList = Array.isArray(req.body.tag) ? req.body.tag : new Array(req.body.tag)
-    console.log(tagList);
-    const imagesdata = req.files;
+    const tagsString = req.body.tag;
+    const tagList = Array.isArray(tagsString)? tagsString : tagsString.trim().split(' ');
+    const imagesdata = Object.entries(req.files).length === 0 ? undefined:req.files;
     const qus = new Question(u_id, title, question);
     let q_id;
     qus.save()
@@ -38,7 +38,7 @@ exports.addQuestion = (req, res, next) => {
                 throw error;
             }
             q_id = rows.insertId;
-            if (imagesdata.length == 0){
+            if (!imagesdata){
                 return Promise.resolve("No Images");
             }
             const images = new Images(u_id, q_id, imagesdata);
