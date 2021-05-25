@@ -50,6 +50,15 @@ module.exports = class Question {
             INSERT INTO q_downvotes (u_id, q_id) VALUES (${auth_u_id},${q_id});
             `;
         }
+        return db.query(qry);
+    }
+    static revokeVote(auth_u_id, q_id, is_vote_up){
+        let qry;
+        if (is_vote_up){
+            qry = `call remove_question_upvote(${auth_u_id}, ${q_id})`;
+        }else{
+            qry = `call remove_question_downvote(${auth_u_id}, ${q_id})`;
+        }
         console.log(qry);
         return db.query(qry);
     }
