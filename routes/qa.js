@@ -21,6 +21,9 @@ router.get('/get-paged-questions/:pageNo',[param('pageNo').exists().isInt()], qa
 // GET /qa/get-question/<question-id>
 router.get('/get-question/:qId',[param('qId').exists().isInt()], qaControler.getQuestionById);
 
+// GET /qa/get-q-attachments/<question-id>
+router.get('/get-q-attachments/:qId',[param('qId').exists().isInt()], qaControler.getQAttachments);
+
 // POST /qa/question-vote
 router.post('/question-vote', [
     body('q_id').exists().trim().isInt(),
@@ -67,4 +70,8 @@ router.get('/get-answer-vote/:a_id',[
 ],
 qaControler.getAnswerVote
 )
+
+
+
+
 module.exports = router;

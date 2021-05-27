@@ -24,4 +24,7 @@ module.exports = class Images {
             qry
         );
     }
+    static getImagesByQid(q_id){
+        return db.execute(`select * from q_attachments where q_id = ${q_id}`);
+    }
 };

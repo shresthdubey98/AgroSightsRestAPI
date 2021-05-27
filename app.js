@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const path = require('path');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
@@ -8,6 +9,12 @@ const userRouter = require("./routes/user");
 const qaRouter = require("./routes/qa");
 const mime = require('mime-types');
 const app = express();
+const server = http.createServer(app);
+
+//attaching socketio to server
+// const io = require('socket.io').listen(server);
+// io.of('/chat').on('connection', require('./util/chatsocket').chatHandler)
+require('./util/chatsocket').chatHandler(server);
 
 app.use(bodyParser.json()); // for application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -95,4 +102,6 @@ app.use((error, req, res, next) => {
   const data = error.data;
   res.status(status).json({ message: message, data: data });
 });
-app.listen(5000);
+server.listen(5000,()=>{
+  console.log("Server Started at port : 5000")
+});

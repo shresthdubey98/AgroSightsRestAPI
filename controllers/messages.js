@@ -1,21 +1,7 @@
 const { validationResult, param } = require('express-validator/check');
-const Tag = require('../models/tag');
-const QTags = require('../models/tags');
-const Question = require('../models/question');
 const Images = require('../models/images');
-const Answer = require('../models/answer');
-exports.getAllTags = (req, res, next) => {
-    Tag.getAllTags()
-        .then(([rows, fieldData]) => {
-            res.status(200).json({ data: rows });
-        })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
-        });
-}
+
+
 exports.addQuestion = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -246,31 +232,6 @@ exports.getAnswerVote = (req, res, next)=>{
     Answer.getAnswerVoteByUId(auth_u_id,aId)
     .then(([rows, fieldData])=>{
         return res.status(200).json(rows);
-    })
-    .catch(err=>{
-        console.log(err);
-        return res.status(500).json({message: 'Internal Server Error'});
-    })
-}
-exports.getQAttachments = (req, res, next)=>{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const error = new Error('Validation failed');
-        error.statusCode = 422;
-        error.data = errors.array();
-        throw error;
-    }
-    const qId = req.params.qId;
-    
-    Images.getImagesByQid(qId)
-    .then(([rows, fieldData])=>{
-        if (rows.length==0){
-            res.status(404).json({message: 'No Data Found'});
-        }
-        rows.forEach(e=>{
-            e.imageUrl = '/media/images/'+e.file_name;
-        });
-        return res.status(200).json({data: rows});
     })
     .catch(err=>{
         console.log(err);
