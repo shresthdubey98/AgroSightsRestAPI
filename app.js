@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+
 const userRouter = require("./routes/user");
 const qaRouter = require("./routes/qa");
+const chatRouter = require('./routes/chat');
 const mime = require('mime-types');
 const app = express();
 const server = http.createServer(app);
@@ -21,6 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Uncomment for static serving 
 app.use('/media/images', express.static(path.join(__dirname, 'media', 'images')));
+app.use('/media/message-media', express.static(path.join(__dirname, 'media', 'message-media')));
+
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -95,6 +99,7 @@ app.use(
 //   res.status(200).json({files: req.files, body:req.body});
 // });
 app.use('/qa', qaRouter);
+app.use('/chat',chatRouter);
 app.use((error, req, res, next) => {
   // console.log(error);
   const status = error.statusCode || 500;

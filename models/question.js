@@ -22,7 +22,7 @@ module.exports = class Question {
 
     static getQuestionById(q_id, auth_u_id){
         return db.execute(
-            `SELECT q.*, u.f_name as u_f_name, u.l_name as u_l_name,
+            `SELECT q.*, u.id as u_id, u.f_name as u_f_name, u.l_name as u_l_name,
         CASE
             WHEN (SELECT count(*) FROM q_upvotes WHERE u_id = ${auth_u_id} and q_id = ${q_id}) > 0 THEN True
             ELSE False

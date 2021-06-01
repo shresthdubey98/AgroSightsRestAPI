@@ -17,7 +17,7 @@ module.exports = class Answer {
         return db.execute(qry, [this.u_id, this.q_id, this.ans]);
     }
     static getAnswers(q_id) {
-        return db.execute(`SELECT a.id, a.u_id, a.answer, u.f_name, u.l_name, a.upvotes, a.downvotes from answers a, users u where a.u_id = u.id and a.q_id = ${q_id}`);
+        return db.execute(`SELECT distinct a.id, a.u_id, a.answer, u.f_name, u.l_name, a.upvotes, a.downvotes from answers a, users u where a.u_id = u.id and a.q_id = ${q_id}`);
     }
 
     static setVote(auth_u_id, a_id, is_vote_up) {
